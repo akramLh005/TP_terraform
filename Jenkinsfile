@@ -32,13 +32,7 @@ pipeline {
             steps {
                 echo "Planning Terraform changes..."
                 sh '''
-                    terraform plan -input=false \
-                        -var="subscription_id=${AZURE_SUBSCRIPTION_ID}" \
-                        -var="resource_group=${RESOURCE_GROUP}" \
-                        -var="location=${LOCATION}" \
-                        -var="docker_image=${DOCKER_IMAGE}" \
-                        -out=tfplan
-                '''
+                    terraform plan                 '''
             }
         }
 
@@ -46,7 +40,7 @@ pipeline {
             steps {
                 echo "Applying Terraform configuration..."
                 sh '''
-                    terraform apply -input=false tfplan
+                    terraform apply -auto-approve
                 '''
             }
         }
