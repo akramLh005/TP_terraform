@@ -10,15 +10,27 @@ pipeline {
     }
 
     stages {
+        stage('Pull Terraform Configuration from GitHub') {
+            steps {
+                echo "Cloning repository to pull Terraform configuration..."
+                git url: 'https://github.com/your-username/your-repo.git', branch: 'main'
+                script {
+                    if (!fileExists('main.tf')) {
+                        error "main.tf not found in the repository. Please check the repository structure."
+                    } else {
+                        echo "main.tf found and ready for use."
+                    }
+                }
+            }
+        }
         stage('Initialize Terraform') {
             steps {
                 echo "Initializing Terraform..."
                 sh '''
-                    pwd
+                    terraform init -input=false
                 '''
             }
         }
-
         stage('Plan Terraform Changes') {
             steps {
                 echo "Planning Terraform changes..."
@@ -32,23 +44,20 @@ pipeline {
                 '''
             }
         }
-
         stage('Apply Terraform Configuration') {
             steps {
                 echo "Applying Terraform configuration..."
                 sh '''
-                    pwd
+                    terraform apply -input=false tfplan
                 '''
             }
         }
-
         stage('Deploy Docker Container') {
             steps {
                 echo "Deploying Docker container to Azure Web App..."
                 sh '''
                     # Get the web app name from Terraform output
                     WEB_APP_NAME=$(terraform output -raw web_app_name)
-
                     # Update the web app to use the Docker image
                     az webapp config container set \
                         --resource-group ${RESOURCE_GROUP} \
