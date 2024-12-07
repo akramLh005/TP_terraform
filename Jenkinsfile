@@ -14,7 +14,7 @@ pipeline {
             steps {
                 echo "Initializing Terraform..."
                 sh '''
-                    terraform init -input=false
+                    pwd
                 '''
             }
         }
