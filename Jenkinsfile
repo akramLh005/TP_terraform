@@ -18,8 +18,7 @@ pipeline {
                     credentialsId: 'github-credentials'
             }
         }
-        
-    }
+
         stage('Initialize Terraform') {
             steps {
                 echo "Initializing Terraform..."
@@ -28,6 +27,7 @@ pipeline {
                 '''
             }
         }
+
         stage('Plan Terraform Changes') {
             steps {
                 echo "Planning Terraform changes..."
@@ -41,6 +41,7 @@ pipeline {
                 '''
             }
         }
+
         stage('Apply Terraform Configuration') {
             steps {
                 echo "Applying Terraform configuration..."
@@ -49,6 +50,7 @@ pipeline {
                 '''
             }
         }
+
         stage('Deploy Docker Container') {
             steps {
                 echo "Deploying Docker container to Azure Web App..."
