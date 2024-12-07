@@ -37,7 +37,7 @@ pipeline {
             steps {
                 echo "Applying Terraform configuration..."
                 sh '''
-                    terraform apply -input=false tfplan
+                    pwd
                 '''
             }
         }
