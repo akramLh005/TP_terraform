@@ -2,8 +2,6 @@ pipeline {
     agent any
 
     environment {
-        // Secure credentials for Azure Subscription
-        AZURE_SUBSCRIPTION_ID = credentials('azure-subscription-id') // Replace with your Jenkins Credential ID
         RESOURCE_GROUP = "TP_terraform" // Resource Group name
         LOCATION = "northeurope" // Azure location
         DOCKER_IMAGE = "nginx:latest" // Demo Docker image to deploy
@@ -32,7 +30,8 @@ pipeline {
             steps {
                 echo "Planning Terraform changes..."
                 sh '''
-                    terraform plan                 '''
+                    terraform plan
+                '''
             }
         }
 
@@ -41,6 +40,15 @@ pipeline {
                 echo "Applying Terraform configuration..."
                 sh '''
                     terraform apply -auto-approve
+                '''
+            }
+        }
+
+        stage('Authenticate Azure CLI with Managed Identity') {
+            steps {
+                echo "Authenticating Azure CLI with Managed Identity..."
+                sh '''
+                    az login --identity
                 '''
             }
         }
@@ -55,7 +63,7 @@ pipeline {
                     az webapp config container set \
                         --resource-group ${RESOURCE_GROUP} \
                         --name ${WEB_APP_NAME} \
-                        --docker-custom-image-name ${DOCKER_IMAGE}
+                        --container-image-name ${DOCKER_IMAGE}
                 '''
             }
         }
