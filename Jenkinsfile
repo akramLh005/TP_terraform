@@ -4,7 +4,7 @@ pipeline {
     environment {
         RESOURCE_GROUP = "TP_terraform" // Resource Group name
         LOCATION = "northeurope" // Azure location
-        DOCKER_IMAGE = "nginx:latest" // Demo Docker image to deploy
+        DOCKER_IMAGE = "akramlh/tp3-k8s:latest" // Demo Docker image to deploy
     }
 
     stages {
