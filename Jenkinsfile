@@ -13,16 +13,13 @@ pipeline {
         stage('Pull Terraform Configuration from GitHub') {
             steps {
                 echo "Cloning repository to pull Terraform configuration..."
-                git url: 'https://github.com/your-username/your-repo.git', branch: 'main'
-                script {
-                    if (!fileExists('main.tf')) {
-                        error "main.tf not found in the repository. Please check the repository structure."
-                    } else {
-                        echo "main.tf found and ready for use."
-                    }
-                }
+                git url: 'https://github.com/your-username/your-repo.git',
+                    branch: 'main',
+                    credentialsId: 'github-credentials'
             }
         }
+        
+    }
         stage('Initialize Terraform') {
             steps {
                 echo "Initializing Terraform..."
