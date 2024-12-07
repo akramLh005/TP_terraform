@@ -14,7 +14,7 @@ resource "random_id" "suffix" {
 }
 
 resource "azurerm_service_plan" "example" {
-  name                = "serviceplan"
+  name                = "serviceplan-${random_id.suffix.hex}"
   location            = data.azurerm_resource_group.existing.location
   resource_group_name = data.azurerm_resource_group.existing.name
 
