@@ -13,7 +13,7 @@ pipeline {
         stage('Pull Terraform Configuration from GitHub') {
             steps {
                 echo "Cloning repository to pull Terraform configuration..."
-                git url: 'https://github.com/your-username/your-repo.git',
+                git url: 'https://github.com/akramLh005/TP_terraform.git',
                     branch: 'main',
                     credentialsId: 'github-credentials'
             }
