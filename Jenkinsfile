@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        RESOURCE_GROUP = "TP_terraform" // Resource Group name
-        LOCATION = "northeurope" // Azure location
-        DOCKER_IMAGE = "akramlh/tp3-k8s:latest" // Demo Docker image to deploy
+        RESOURCE_GROUP = "TP_terraform" 
+        LOCATION = "northeurope"
+        DOCKER_IMAGE = "akramlh/tp3-k8s:latest" 
     }
 
     stages {
