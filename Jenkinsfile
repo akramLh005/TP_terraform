@@ -29,22 +29,30 @@ pipeline {
         stage('Plan Terraform Changes') {
             steps {
                 echo "Planning Terraform changes..."
-                sh '''
-                    terraform plan \
-                    -var "subscription_id=$AZURE_SUBSCRIPTION_ID" \
-                    -var "docker_image=${DOCKER_IMAGE}"
-                '''
+                withCredentials([
+                    string(credentialsId: 'azure-subscription-id', variable: 'SUBSCRIPTION_ID')
+                ]) {
+                    sh '''
+                        terraform plan \
+                        -var "subscription_id=${SUBSCRIPTION_ID}" \
+                        -var "docker_image=${DOCKER_IMAGE}"
+                    '''
+                }
             }
         }
 
         stage('Apply Terraform Configuration') {
             steps {
                 echo "Applying Terraform configuration..."
-                sh '''
-                    terraform apply -auto-approve \
-                    -var "subscription_id=$AZURE_SUBSCRIPTION_ID" \
-                    -var "docker_image=${DOCKER_IMAGE}"
-                '''
+                withCredentials([
+                    string(credentialsId: 'azure-subscription-id', variable: 'SUBSCRIPTION_ID')
+                ]) {
+                    sh '''
+                        terraform apply -auto-approve \
+                        -var "subscription_id=${SUBSCRIPTION_ID}" \
+                        -var "docker_image=${DOCKER_IMAGE}"
+                    '''
+                }
             }
         }
     }
