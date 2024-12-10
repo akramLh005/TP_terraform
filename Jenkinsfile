@@ -51,4 +51,14 @@ pipeline {
 
     post {
         always {
-            echo "
+            echo "Cleaning up workspace..."
+            cleanWs()
+        }
+        success {
+            echo "Pipeline completed successfully!"
+        }
+        failure {
+            echo "Pipeline failed. Please check the logs for details."
+        }
+    }
+}
