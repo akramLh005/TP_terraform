@@ -1,8 +1,7 @@
 provider "azurerm" {
   features {}
   use_msi                        = true
-  subscription_id                = "4e6b132a-5ee7-4a06-9850-795d055dd655"
-  resource_provider_registrations = "none"
+  subscription_id                = var.subscription_id
 }
 
 data "azurerm_resource_group" "existing" {
@@ -29,13 +28,10 @@ resource "azurerm_linux_web_app" "example" {
   service_plan_id     = azurerm_service_plan.example.id
 
   site_config {
-    always_on     = false
-    http2_enabled = true
-  }
-
-  app_settings = {
-    "DOCKER_ENABLE_CI"       = "true"
-    "DOCKER_CUSTOM_IMAGE_NAME" = var.docker_image
+    application_stack {
+      docker_image_name   = var.docker_image
+      docker_registry_url = "https://index.docker.io"
+    }
   }
 
   identity {
@@ -43,11 +39,11 @@ resource "azurerm_linux_web_app" "example" {
   }
 }
 
-# Terraform variable for the Docker image
-variable "docker_image" {
-  default = "nginx:latest"
+# Terraform variables
+variable "subscription_id" {
+  description = "Azure subscription ID"
 }
 
-output "web_app_name" {
-  value = azurerm_linux_web_app.example.name
+variable "docker_image" {
+  description = "Docker image to deploy"
 }
