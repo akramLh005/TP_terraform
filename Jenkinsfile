@@ -42,7 +42,7 @@ pipeline {
                 echo "Applying Terraform configuration..."
                 sh '''
                     terraform apply -auto-approve \
-                    -var "subscription_id=$AZURE_SUBSCRIPTION_ID" \
+                    -var "subscription_id=$azure-subscription-id" \
                     -var "docker_image=${DOCKER_IMAGE}"
                 '''
             }
